@@ -1,5 +1,3 @@
-
-
 public class Profissional extends Usuario{
 
 	public Profissional(int idUser, String nome) {

@@ -1,5 +1,3 @@
-
-
 public class Pesquisador extends Usuario{
 
 	public Pesquisador(int idUser, String nome) {

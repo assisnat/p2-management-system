@@ -1,5 +1,3 @@
-//import users.*;
-
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
@@ -8,13 +6,12 @@ public class Atividade {
 	private String descricao;
 	LocalDateTime inicio;
 	LocalDateTime termino;
-	Projeto responsavel;
+	Usuario responsavel;
 	
-	// Profissionais e tarefas compartilham indice
-	LinkedList<Projeto> profissionais;
+	LinkedList<Usuario> profissionais;
 	LinkedList<String> tarefas;
 	
-	public Atividade(int id, String descricao, LocalDateTime inicio, LocalDateTime termino, Projeto responsavel) {
+	public Atividade(int id, String descricao, LocalDateTime inicio, LocalDateTime termino, Usuario responsavel) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -25,7 +22,7 @@ public class Atividade {
 		tarefas = new LinkedList<>();
 	}
 	
-	public void adicionarProfissional(Projeto usuario, String tarefa) {
+	public void adicionarProfissional(Usuario usuario, String tarefa) {
 		profissionais.add(usuario);
 		tarefas.add(tarefa);
 	}
@@ -60,17 +57,15 @@ public class Atividade {
 		}
 	}
 	
-	// Getters e Setters
-	
 	public int getId() {
 		return id;
 	}
 
-	public Projeto getResponsavel() {
+	public Usuario getResponsavel() {
 		return responsavel;
 	}
 
-	public LinkedList<Projeto> getProfissionais() {
+	public LinkedList<Usuario> getProfissionais() {
 		return profissionais;
 	}
 	
@@ -102,7 +97,7 @@ public class Atividade {
 		this.termino = termino;
 	}
 
-	public void setResponsavel(Projeto responsavel) {
+	public void setResponsavel(Usuario responsavel) {
 		this.responsavel = responsavel;
 	}
 }

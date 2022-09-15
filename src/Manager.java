@@ -7,135 +7,88 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-//import users.*;
-
 public class Manager {
-	private static int proj_id_seq = 0;
-	private static int ativ_id_seq = 0;
+	private static int i = 0, j = 0;
     private static LinkedList<Projeto> projetos = new LinkedList<>();
 	private static LinkedList<Usuario> usuarios = new LinkedList<>();
 	private static LinkedList<Atividade> atividades = new LinkedList<>();
 	
-	///////////////////////////////////////////////////
-	// Métodos auxiliares
-	//////////////////////////////////////////////////
-	
-	// Le uma linha da entrada padrão
 	private static String readLine() {
-		// Inicializa o leitor da entrada padrão
 		BufferedReader leitor = new BufferedReader(new InputStreamReader(System.in));
 
 		try {
 			return leitor.readLine();
-		} catch (IOException e) {
+		}catch (IOException e){
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
 	
-	// Recebe um conjunto de opções disponíveis e retorna uma opção lida
-	// que esteja entre as opções disponíveis
 	private static int readOption(int [] opcoes) {
 		int opcao;
 
 		while(true) {
-			// Imprime mensagem
-			System.out.print("Opcao ");
-			
-			// Tenta ler a linha da entrada padrão e converter para inteiro
+			System.out.print("Opção ");
 			try {
 				opcao = Integer.parseInt(readLine());
-			
-			// Se não foi possível converter para inteiro
 			} catch (NumberFormatException e) {
-				// Imprime mensagem de opção invalida e volta pro inicio do loop
-				System.out.println("\nOpcao invalida!\n");
+				System.out.println("\nOpção inválida!\n");
 				continue;
 			}
 			
-			// Para cada opção possível
 			for(int o : opcoes) {
-				// Verifica se a opção lida é igual a uma delas
 				if(opcao == o) {
-					// Se for, retorna a opção lida
 					return opcao;
 				}
 			}
 			
-			// Caso contrário, imprime mensagem de opção inválida
-			System.out.println("\nOpcao invalida!\n");
+			System.out.println("\nOpção inválida!\n");
 		}
 	}
 	
-	// Recebe um conjunto de opções disponíveis e retorna uma opção lida
-	// que esteja entre as opções disponíveis
-	private static int leInt(int min, int max) {
+	private static int readInt(int min, int max) {
 		int numero;
 		
-		// Repete para validar a entrada
 		while(true) {
-			
-			// Tenta ler a linha da entrada padrão e converter para inteiro
 			try {
 				numero = Integer.parseInt(readLine());
-			
-			// Se não foi possível converter para inteiro
 			} catch (NumberFormatException e) {
-				// Retorna o anterior ao mínimo
 				return min - 1;
 			}
 			
-			// Se o numero não está no intervalo
 			if(numero < min || numero > max) {
-				// Retorna o sucessor do máximo
 				return max + 1;
 			}
 			
-			// Caso contrário, retorna o numero
 			return numero;
 		}
 	}
 	
-	private static int leID(String label) {
+	private static int readId(String label) {
 		int idUser;
 		
-		// Loop para validar
 		while(true) {
-			// Le RA
 			System.out.print(label + ": ");
-			
-			// Tenta converter entrada para inteiro
 			try {
 				idUser = Integer.parseInt(readLine());			
 				
-			// Se não for possível
 			} catch (NumberFormatException e) {
-				// Imprime RA inválido
 				System.out.println("\n" + label + " invalido!\n");
-				
-				// E volta ao inicio do loop
 				continue;
 			}
-			
-			// Se o número foi convertido, retorna o ra lido
 			return idUser;
 		}	
 	}
 
-	// Le uma data e hora da entrada padrão
-	private static LocalDateTime leData() {	
+	private static LocalDateTime readDate() {	
 		LocalDate data;
 		LocalTime time;
 		int dia, mes, ano, hora, min;
 		
-		// Valida a data
 		while (true) {
-			
-			// Valida o dia
 			while(true) {
 				System.out.print("Dia: ");
-				dia = leInt(1,31);
+				dia = readInt(1,31);
 				
 				if(dia <= 0 || dia >= 32) {
 					System.out.print("\nDia inválido! Insira apenas um dia entre 1 e 31.\n");
@@ -144,11 +97,9 @@ public class Manager {
 				}
 			}
 			
-			
-			// Valida o mês
 			while(true) {
 				System.out.print("Mês: ");
-				mes = leInt(1,12);
+				mes = readInt(1,12);
 				
 				if(mes <= 0 || mes >= 13) {
 					System.out.print("\nMês inválido! Insira apenas um mês entre 1 e 12.\n");
@@ -157,10 +108,9 @@ public class Manager {
 				}
 			}
 			
-			// Valida o ano
 			while(true) {
 				System.out.print("Ano: ");
-				ano = leInt(2000,2022);
+				ano = readInt(2000,2022);
 				
 				if(ano <= 1999 || ano >= 2023) {
 					System.out.print("\nAno inválido!\n");
@@ -169,27 +119,19 @@ public class Manager {
 				}
 			}
 			
-			// Estabele a data a partir do ano, mês e dia lidos
 			try { 
-				// Tenta criar a data
 				data = LocalDate.of(ano, mes, dia);
-				
-				// Se der certo, quebra o loop
 				break;
-			// Se a data for inválida, haverá uma exception
 			} catch (DateTimeException e) {
 				System.out.println("\nData inválida!\n");
 				continue;
 			}
 		}
-		
-		// Valida o horario
+
 		while(true) {
-			// Se a data está validada, agora le a hora
-			// Valida a hora
 			while(true) {
 				System.out.print("Hora: ");
-				hora = leInt(0,23);
+				hora = readInt(0,23);
 				
 				if(hora <= -1 | hora >= 24) {
 					System.out.print("\nHora inválida! Insira um número entre 0 e 23.\n");
@@ -198,10 +140,9 @@ public class Manager {
 				}
 			}
 			
-			// Valida os minutos
 			while(true) {
 				System.out.print("Minuto: ");
-				min = leInt(0,59);
+				min = readInt(0,59);
 				
 				if(min <= -1 || min >= 60) {
 					System.out.print("\nMinuto inválido! Insira um número entre 0 e 59.\n");
@@ -210,8 +151,6 @@ public class Manager {
 				}
 			}
 			
-			
-			// Tenta criar a hora corretamente
 			try {
 				time = LocalTime.of(hora, min);			
 				break;
@@ -221,17 +160,12 @@ public class Manager {
 			}
 		}
 
-		// Finalmente, podemos retornar a dada
 		return LocalDateTime.of(data, time);
 	}
 	
-	//////////////////////////////////////////////
-	// Menu Principal
-	///////////////////////////////////////////////
-	
-	// Imprime menu principal e retorna a opção lida
+    // Menu principal
+
 	private static int menuPrincipal() {
-		// Imprime mensagens do menu
 		System.out.println("Sistema de Gerenciamento de Projetos\n");
         System.out.println("Seja bem-vindo(a) ao sistema de gerenciamento de projetos, escolha uma das opções a seguir para continuar.\n\n");
 		System.out.println("(1) Projetos");
@@ -243,15 +177,8 @@ public class Manager {
 		return readOption(new int[]{1,2,3,4,5});
 	}
 	
-	///////////////////////////////////////////////
-	// Telas de Projetos e Subtelas
-	///////////////////////////////////////////////
-	
-	// Submenu de projetos
-	// Exibe o submenu de projetos e executa de acordo com a opção lida
 	private static void telaProjetos() {
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nProjetos\n");
 			System.out.println("(1) Criar novo projeto");
 			System.out.println("(2) Editar projeto existente");
@@ -270,19 +197,15 @@ public class Manager {
 				break;
 			case 4:
 				System.out.println("");
-				// Encerra o método
 				return;
 			}
 		}
-		
 	}
 
-	// Cria novo projeto
 	private static void novoProjeto() {
-		Projeto p = new Projeto(proj_id_seq++);
+		Projeto p = new Projeto(i++);
 		
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nCriar Novo Projeto");
 			System.out.println("(1) Descrição do projeto");
 			System.out.println("(2) Coordenador do projeto");
@@ -316,22 +239,14 @@ public class Manager {
 				modificarStatus(p);
 				break;
 			case 8:
-				// Insere projeto na lista de projetos
 				projetos.add(p);
-				// Quebra a linha
 				System.out.println("Projeto criado com sucesso!");
-				// Encerra o método
 				return;
 			case 9:
-				// Quebra a linha
 				System.out.println("Operação cancelada!");
-				// Encerra o método
 				return;
-			}
-			
+			}	
 		}
-		
-		
 	}
 	
 	private static void modificarProjeto() {
@@ -348,9 +263,8 @@ public class Manager {
 			p.print("", "----------------------------------------------\n", true);
 		}
 		
-		// Valida escolha do projeto
 		while(true) {
-			int id = leID("Id do projeto");
+			int id = readId("Id do projeto");
 			Projeto proj = null;
 			boolean encontrado = false;
 			
@@ -367,7 +281,6 @@ public class Manager {
 						"----------------------------------------------\n", true);
 				
 				while(true) {
-					// Imprime mensagens do menu
 					System.out.println("\n Editar projeto");
 					System.out.println("(1) Descrição do projeto");
 			        System.out.println("(2) Coordenador do projeto");
@@ -400,9 +313,7 @@ public class Manager {
 						modificarStatus(proj);
 						break;
 					case 8:
-						// Quebra a linha
 						System.out.println("Operação cancelada!");
-						// Encerra o método
 						return;
 					}
 				}
@@ -418,13 +329,11 @@ public class Manager {
 			return;
 		}
 				
-		// Imprime mensagens do menu
 		System.out.println("\n Consultar projetos");
 		
 		System.out.println("(1) Lista de Projetos");
 		System.out.println("(2) Buscar por ID");
 		
-		// Le a opção e executa de acordo
 		switch(readOption(new int[] {1,2})) {
 		case 1:
 			System.out.println("\n Lista de Projetos");
@@ -437,22 +346,16 @@ public class Manager {
 			return;
 		case 2:
 			System.out.println("\nBuscar por ID");
-			// Le RA
-			int id = leID("ID");
+			int id = readId("ID");
 			
-			// Procura usuario com ra lido
 			for(Projeto p : projetos) {
-				
-				// Se o id foi encontrado na lista de atividades
 				if(p.getId() == id) {
-					// Imprime informações da atividade
 					p.print("\n----------------------------------------------\n",
 							"----------------------------------------------\n", false);
 					return;
 				}				
 			}
 			
-			// Se não encontramos o id;
 			System.out.println("\nProjeto não encontrado!");
 			
 			return;
@@ -460,13 +363,8 @@ public class Manager {
 		
 	}
 	
-	///////////////////////////////////////////////////////////////
-	// Métodos auxiliares dos métodos de Projetos
-	///////////////////////////////////////////////////////////////
-	
 	private static void submenuProfissionaisProjeto(Projeto p) {
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nProfissionais do projeto");
 			System.out.println("(1) Adicionar profissionar");
 			System.out.println("(2) Remover profissionar");
@@ -483,7 +381,6 @@ public class Manager {
 				listarProfissionalProjeto(p);
 				break;
 			case 4:
-				// Encerra o método
 				return;
 			}
 			
@@ -492,7 +389,6 @@ public class Manager {
 	
 	private static void submenuAtividadesProjeto(Projeto p) {
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\n Atividades do projeto");
 			System.out.println("(1) Adicionar atividade");
 			System.out.println("(2) Remover atividade");
@@ -509,7 +405,6 @@ public class Manager {
 				listarAtividadesProjeto(p);
 				break;
 			case 4:
-				// Encerra o método
 				return;
 			}
 			
@@ -520,10 +415,8 @@ public class Manager {
 		String descricao;
 		
 		if(p.getDescricao() == null) {
-			// Imprime mensagens do menu
 			System.out.println("\n Descrição do Projeto");
 			
-			// Le nova descrição para o projeto
 			System.out.println("Descrição: ");
 			descricao = readLine();
 			
@@ -532,14 +425,11 @@ public class Manager {
 			return;
 						
 		} else {
-			// Imprime mensagens do menu
 			System.out.println("\n Alterar Descrição do Projeto");
 			
-			// Le nova descrição para o projeto
 			System.out.println("Nova descrição: ");
 			descricao = readLine();
 			
-			// Confirma
 			System.out.println("\nDeseja substituir a descrição?");
 			
 			System.out.println("\nDescrição antiga: " + p.getDescricao());
@@ -549,7 +439,6 @@ public class Manager {
 			System.out.println("\n(1) Confirmar e substituir");
 			System.out.println("(2) Cancelar e voltar");
 			
-			// Le a opção e executa de acordo
 			switch(readOption(new int[] {1,2})) {
 			case 1:
 				p.setDescricao(descricao);
@@ -565,16 +454,13 @@ public class Manager {
 	private static void modificarCoordenador(Projeto p) {
 		
 		if(p.getCoordenador() == null) {
-			// Imprime mensagens do menu
 			System.out.println("\nCoordenador de Projeto");
 			
-			// Repete para validar o RA
 			while(true) {
-				int idUser = leID("Id do Coordenador");
+				int idUser = readId("Id do Coordenador");
 				Usuario user = null;
 				boolean encontrado = false;
 				
-				// Procura por ra
 				for(Usuario u : usuarios) {
 					if(u.getIdUser() == idUser) {
 						encontrado = true;
@@ -583,15 +469,11 @@ public class Manager {
 					}
 				}
 				
-				// Se encontrado
 				if(encontrado) {
-					// Imprime o usuario
 					user.print("\n----------------------------------------------\n",
 							"----------------------------------------------\n");
 					
-					// Verifica se pode ser coordenador
 					if(Projeto.validaCoordenador(user)) {
-						// Se puder, adiciona como coordenador
 						System.out.println("\nConfirma este usuário como coordenador do projeto?");
 						
 						System.out.println("\n(1) Confirmar");
@@ -651,16 +533,13 @@ public class Manager {
 				}
 			}						
 		} else {
-			// Imprime mensagens do menu
 			System.out.println("\n Alterar Coordenador de Projeto");
 			
-			// Repete para validar o RA
 			while(true) {
-				int idUser = leID("Id do Novo Coordenador");
+				int idUser = readId("Id do Novo Coordenador");
 				Usuario user = null;
 				boolean encontrado = false;
 				
-				// Procura por ra
 				for(Usuario u : usuarios) {
 					if(u.getIdUser() == idUser) {
 						encontrado = true;
@@ -669,19 +548,14 @@ public class Manager {
 					}
 				}
 				
-				// Se encontrado
 				if(encontrado) {
-					// Imprime o antigo coordenador
 					p.getCoordenador().print("\n----------------------------------------------\nAntigo Coordenador:\n",
 							"----------------------------------------------\n");
 					
-					// Imprime o novo coordenador
 					user.print("Novo Coordenador:\n",
 							"----------------------------------------------\n");
 					
-					// Verifica se pode ser coordenador
 					if(Projeto.validaCoordenador(user)) {
-						// Se puder, adiciona como coordenador
 						System.out.println("\nConfirmar a substituição do coordenador do projeto?");
 						
 						System.out.println("\n(1) Confirmar");
@@ -747,26 +621,21 @@ public class Manager {
 		LocalDateTime inicio;
 		
 		if(p.getInicio() == null) {
-			// Imprime mensagens do menu
 			System.out.println("\nData de Início do Projeto");
 			
-			// Le nova descrição para o projeto
 			System.out.println("Data de início: ");
-			inicio = leData();
+			inicio = readDate();
 			
 			p.setInicio(inicio);
 			System.out.println("\nData de início incluída com sucesso!");
 			return;
 						
 		} else {
-			// Imprime mensagens do menu
 			System.out.println("\nAlterar Data de Início de Projeto");
-
-			// Le nova data de Inicío			
+		
 			System.out.println("Nova data de início:");
-			inicio = leData();
+			inicio = readDate();
 			
-			// Confirma a substituição
 			System.out.println("\nDeseja substituir a data de início?");
 			
 			System.out.println("\nData de início antigo: " + p.getInicio().toString());
@@ -776,7 +645,6 @@ public class Manager {
 			System.out.println("\n(1) Confirmar e substituir");
 			System.out.println("(2) Cancelar e voltar");
 			
-			// Le opção e executa de acordo
 			switch(readOption(new int[] {1,2})) {
 			case 1:
 				p.setInicio(inicio);
@@ -793,26 +661,21 @@ public class Manager {
 		LocalDateTime termino;
 		
 		if(p.getTermino() == null) {
-			// Imprime mensagens do menu
 			System.out.println("\nData de Término do Projeto");
 			
-			// Le nova descrição para o projeto
 			System.out.println("Data de término: ");
-			termino = leData();
+			termino = readDate();
 			
 			p.setTermino(termino);
 			System.out.println("\nData de término incluída com sucesso!");
 			return;
 						
 		} else {
-			// Imprime mensagens do menu
 			System.out.println("\nAlterar Data de Término de Projeto");
-
-			// Le nova data de Inicío			
+		
 			System.out.println("Nova data de término:");
-			termino = leData();
+			termino = readDate();
 			
-			// Confirma a substituição
 			System.out.println("\nDeseja substituir a data de término?");
 			
 			System.out.println("\nData de término antigo: " + p.getTermino().toString());
@@ -822,7 +685,6 @@ public class Manager {
 			System.out.println("\n(1) Confirmar e substituir");
 			System.out.println("(2) Cancelar e voltar");
 			
-			// Le opção e executa de acordo
 			switch(readOption(new int[] {1,2})) {
 			case 1:
 				p.setTermino(termino);
@@ -836,16 +698,13 @@ public class Manager {
 	}
 	
 	private static void adicionarProfissionalProjeto(Projeto p) {
-		// Repete para validar o RA
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nAdicionar Profissional ao Projeto");
 			
-			int idUser = leID("Id");
+			int idUser = readId("Id");
 			Usuario user = null;
 			boolean encontrado = false;
 			
-			// Procura por ra
 			for(Usuario u : usuarios) {
 				if(u.getIdUser() == idUser) {
 					encontrado = true;
@@ -854,13 +713,10 @@ public class Manager {
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
-				// Imprime o usuario
 				user.print("\n----------------------------------------------\n",
 						"----------------------------------------------\n");
 				
-				// Se puder, adiciona como coordenador
 				System.out.println("\nConfirma inclusão deste usuário ao projeto?");
 				
 				System.out.println("\n(1) Confirmar");
@@ -902,31 +758,25 @@ public class Manager {
 	}
 	
 	private static void removerProfissionalProjeto(Projeto p) {
-		// Imprime mensagens do menu
 		System.out.println("\nRemover Profissional ao Projeto");
 		
-		// Repete para validar o RA
 		while(true) {
-			int idUser = leID("Id");
+			int idUser = readId("Id");
 			Usuario user = null;
 			boolean encontrado = false;
 			
-			// Procura por ra
 			for(Usuario u : usuarios) {
-				if(u.getIdUser() == id) {
+				if(u.getIdUser() == idUser) {
 					encontrado = true;
 					user = u;
 					break;
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
-				// Imprime o usuario
 				user.print("\n----------------------------------------------\n",
 						"----------------------------------------------\n");
 				
-				// Se puder, adiciona como coordenador
 				System.out.println("\nConfirma exclusão deste usuário ao projeto?");
 				
 				System.out.println("\n(1) Confirmar exclusão");
@@ -973,16 +823,13 @@ public class Manager {
 	}
 	
 	private static void adicionarAtividadesProjeto(Projeto p) {
-		// Repete para validar o RA
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nAdicionar Atividade ao Projeto");
 			
-			int id = leID("ID da Atividade");
+			int id = readId("ID da Atividade");
 			Atividade ativ = null;
 			boolean encontrado = false;
 			
-			// Procura por ra
 			for(Atividade a : atividades) {
 				if(a.getId() == id) {
 					encontrado = true;
@@ -991,13 +838,10 @@ public class Manager {
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
-				// Imprime o usuario
 				ativ.print("\n----------------------------------------------\n",
 						"----------------------------------------------\n",true);
 				
-				// Se puder, adiciona como coordenador
 				System.out.println("\nConfirma inclusão desta atividade ao projeto?");
 				
 				System.out.println("\n(1) Confirmar");
@@ -1039,16 +883,13 @@ public class Manager {
 	}
 	
 	private static void removerAtividadesProjeto(Projeto p) {
-		// Imprime mensagens do menu
 		System.out.println("\nRemover Atividade ao Projeto");
 		
-		// Repete para validar o RA
 		while(true) {
-			int id = leID("ID");
+			int id = readId("ID");
 			Atividade ativ = null;
 			boolean encontrado = false;
 			
-			// Procura por ra
 			for(Atividade a : atividades) {
 				if(a.getId() == id) {
 					encontrado = true;
@@ -1057,13 +898,10 @@ public class Manager {
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
-				// Imprime o usuario
 				ativ.print("\n----------------------------------------------\n",
 						"----------------------------------------------\n", true);
 				
-				// Se puder, adiciona como coordenador
 				System.out.println("\nConfirma exclusão desta atividade do projeto?");
 				
 				System.out.println("\n(1) Confirmar exclusão");
@@ -1119,7 +957,6 @@ public class Manager {
 		case Projeto.STATUS_CRIACAO:
 			boolean podeAlterarStatus = true;
 			
-			// Verifica se possui requisitos pra alterar status;
 			if(p.getCoordenador() == null) {
 				podeAlterarStatus = false;
 				System.out.println("Coordenador do projeto não definido.");
@@ -1204,23 +1041,10 @@ public class Manager {
 			System.out.println("\nO projeto já foi concluído. Impossível alterar status.");
 			return;
 		}
-		
-		
-		
-		
-		
-		
 	}
-		
-	///////////////////////////////////////////////
-	// Telas de Usuários e Subtelas
-	///////////////////////////////////////////////
-	
-	// Submenu de usuário
-	// Exibe o submenu de usuário e executa de acordo com a opção lida
+  
 	private static void telaUsuarios() {
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nUsuarios");
 			System.out.println("(1) Cadastrar usuário");
 			System.out.println("(2) Remover usuário");
@@ -1239,30 +1063,21 @@ public class Manager {
 				break;
 			case 4:
 				System.out.println("");
-				// Encerra o método
 				return;
 			}
 		}
 	}
 	
-	
-	// Cadastra um usuário no sistema
 	private static void cadastrarUsuario() {
 		Usuario novoUsuario = null;
 		String nome;
 		int idUser;
 		
-		// Imprime mensagens do menu
 		System.out.println("\nCadastrar usuário");
-		
-		// Le RA
-		idUser = leID("Id (Número de Matrícula): ");
-
-		// Le nome
+		idUser = readId("Id (Número de Matrícula): ");
 		System.out.print("Nome: ");
 		nome = readLine();
 		
-		// Le categoria
 		System.out.println("Categoria:");
 		System.out.println("(1) Aluno de Graduação");
 		System.out.println("(2) Aluno de Mestrado");
@@ -1272,7 +1087,6 @@ public class Manager {
 		System.out.println("(6) Profissional");
 		System.out.println("(7) Técnico");
 		
-		// Le a opção da categoria para criar o usuario com a classe correta
 		switch(readOption(new int[] {1,2,3,4,5,6,7})) {
 		case Usuario.CAT_ALUNO_GRADUACAO:
 			novoUsuario = new AlunoGraduacao(idUser, nome);
@@ -1297,21 +1111,17 @@ public class Manager {
 			break;
 		}
 					
-		// Confirma com o usuario para prosseguir ou cancela e volta
 		System.out.println("\nAs informações estao corretas?");
 		
-		// Imprime informações para confirmação
 		novoUsuario.print("\n----------------------------------------------\n",
 				"----------------------------------------------\n\n");
 		
-		// Exibe mensagem de confirmação
 		System.out.println("(1) Confirmar e cadastrar ");
 		System.out.println("(2) Cancelar e voltar");
 		
 		// 
 		switch(readOption(new int[] {1,2})) {
 		case 1:
-			// Verifica se o RA já foi cadastrado
 			for(Usuario u : usuarios) {
 				if(u.getIdUser() == idUser) {
 					System.out.println("\nId já cadastrado! Operação cancelada!");
@@ -1319,21 +1129,14 @@ public class Manager {
 				}
 			}
 			
-			// Caso não tenhamos encontrado o RA já cadastrado
-			// Adiciona usuario na lista de usuários
 			usuarios.add(novoUsuario);
 			
-			// Imprime mensagem
 			System.out.println("\nUsuário cadastrado com sucesso!");
 		case 2:
-			// Encerra a função
 			return;
 		}
-		
 	}
 	
-	
-	// Busca por RA e remove usuario
 	private static void removerUsuario() {
 		if(usuarios.size() == 0) {
 			System.out.println("Não há usuários para remover!\n");
@@ -1342,17 +1145,12 @@ public class Manager {
 		
 		int idUser;
 		
-		// Imprime mensagens do menu
 		System.out.println("\n== Remover usuário ==");
-
-		// Le RA
-	    idUser = leID("Id");
+	    idUser = readId("Id");
 		
-		int index = Projeto.indiceEmLista(usuarios, idUser);
+		int index = Usuario.indiceEmLista(usuarios, idUser);
 					
-		// Se o ra foi encontrado na lista de usuarios
 		if(index != -1) {
-			// Imprime informações do usuario e confirma a remoção
 			System.out.println("\nDeseja remover o usuário?");
 	
 			usuarios.get(index).print("\n----------------------------------------------\n",
@@ -1361,7 +1159,6 @@ public class Manager {
 			System.out.println("(1) Remover e voltar");
 			System.out.println("(2) Cancelar e voltar");
 			
-			// Le a opção e remove o usuario ou cancela, dependendo do caso
 			switch(readOption(new int[] {1,2})) {
 			case 1:
 				usuarios.remove(index);
@@ -1373,27 +1170,21 @@ public class Manager {
 			}
 		} 
 
-		// Se chegamos aqui, não encontramos o usuario, então exibe mensagem e retorna
 		System.out.println("\nUsuário não encontrado!");
 		return;
-			
 	}
 	
-	
-	// Exibe lista de usuários ou busca usuario específico por RA
 	private static void consultarUsuarios() {
 		if(usuarios.size() == 0) {
 			System.out.println("Não há usuários para consultar!\n");
 			return;
 		}
 		
-		// Imprime mensagens do menu
 		System.out.println("\n== Consultar usuários ==");
 		
 		System.out.println("(1) Lista de Usuários");
 		System.out.println("(2) Buscar por id");
 		
-		// Le a opção e executa de acordo
 		switch(readOption(new int[] {1,2})) {
 		case 1:
 			System.out.println("\nLista de Usuários");
@@ -1406,39 +1197,24 @@ public class Manager {
 			return;
 		case 2:
 			System.out.println("\nBuscar por id");
-			// Le RA
-			int id = leID("Id");
+			int id = readId("Id");
 			
-			// Procura usuario com ra lido
 			for(Usuario u : usuarios) {
-				// Se o ra foi encontrado na lista de usuarios
 				if(u.getIdUser() == id) {
-					// Imprime informações do usario
 					u.print("\n----------------------------------------------\n",
 							"----------------------------------------------\n");
 					return;
 				}
 			}
 			
-			// Se não encontramos o ra;
 			System.out.println("\nUsuário não encontrado!");
 			
 			return;
 		}
 	}
 
-	///////////////////////////////////////////////
-	
-	///////////////////////////////////////////////
-	// Telas de Atividades e Subtelas
-	
-	///////////////////////////////////////////////
-	
-	// Submenu de atividades
-	// Exibe o submenu de atividades e executa de acordo com a opção lida
 	private static void telaAtividades() {
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nAtividades");
 			System.out.println("(1) Adicionar");
 			System.out.println("(2) Remover");
@@ -1461,14 +1237,11 @@ public class Manager {
 				break;
 			case 5:
 				System.out.println("");
-				// Encerra o método
 				return;
 			}
 		}	
 	}
 	
-	
-	// Cria e adiciona uma nova atividade
 	private static void adicionarAtividade() {
 		Usuario responsavel = null;
 		String descricao;
@@ -1478,22 +1251,16 @@ public class Manager {
 		boolean continuar = true;
 		boolean encontrado;
 		
-		System.out.println("\n== Adicionar Atividade ==");
+		System.out.println("\nAdicionar Atividade");
 		
-		// Procura por ra e valida como responsável
 		while(continuar) {
-			idUser = leID("Id do Responsável");
-			
-			// Supõe que não encontramos o usuário
+			idUser = readId("Id do Responsável");
 			encontrado = false;
 			
-			// Procura na lista de usuários
 			for(Usuario u : usuarios) {
 				if (u.getIdUser() == idUser) {
-					// Usuario encontrado
 					encontrado = true;
 					
-					// Confirma o responsavel
 					System.out.println("\nConfirma responsável pela atividade?");
 					u.print("\n----------------------------------------------\n",
 							"----------------------------------------------\n");
@@ -1502,12 +1269,9 @@ public class Manager {
 					System.out.println("(2) Não");
 					System.out.println("(3) Cancelar e voltar");
 					
-					// Le opções e trata de acordo
 					switch(readOption(new int[] {1,2,3})) {
 					case 1:
-						// Define o responsável
 						responsavel = u;
-						// Continua
 						continuar = false;
 						break;
 					case 2:
@@ -1518,12 +1282,10 @@ public class Manager {
 						return;
 					}
 					
-					// Podemos parar a procura por novos usuarios
 					break;
 				}
 			}
 			
-			// Se não foi encontrado
 			if(continuar && !encontrado) {
 				System.out.println("\nUsuário não encontrado!\n");
 				System.out.println("(1) Ler outro id");
@@ -1542,29 +1304,23 @@ public class Manager {
 		System.out.println("\nDescrição da atividade: ");
 		descricao = readLine();
 		
-		// Valida se termino é depois do inicio
 		while(true) {
 			System.out.println("Data de inicio: ");
-			inicio = leData();
+			inicio = readDate();
 			
 			System.out.println("Data de término: ");
-			termino = leData();
+			termino = readDate();
 			
-			// Verifica se a data de termino é posterior à de inicio
 			if(termino.isAfter(inicio)) {
-				// Quebra o loop
 				break;
-			// Caso contrário, comenta erro
 			} else {
 				System.out.println("\nInício e término inválidos! A data de início é posterior à data de término.\n");
 				continue;
 			}
 		}
 		
-		// Cria a atividade
-		Atividade a = new Atividade(ativ_id_seq++, descricao, inicio, termino, responsavel);
-		
-		// Imprime informações da atividade
+		Atividade a = new Atividade(j++, descricao, inicio, termino, responsavel);
+
 		System.out.println("\nOs dados da atividade estão corretos?");
 		
 		a.print("\n----------------------------------------------\n",
@@ -1573,7 +1329,6 @@ public class Manager {
 		System.out.println("\n(1) Confirmar e adicionar");
 		System.out.println("(2) Cancelar e voltar");
 		
-		// Le a opção e remove o usuario ou cancela, dependendo do caso
 		switch(readOption(new int[] {1,2})) {
 		case 1:
 			atividades.add(a);
@@ -1585,13 +1340,11 @@ public class Manager {
 			return;
 		}
 		
-		// Verifica se quer adicionar profissionais envolvidos
 		while(true) {
 			System.out.println("Deseja adicionar profissionais envolvidos na atividade?");
 			System.out.println("\n(1) Sim");
 			System.out.println("(2) Voltar");
 			
-			// Le a opção e remove o usuario ou cancela, dependendo do caso
 			switch(readOption(new int[] {1,2})) {
 			case 1:
 				adicionarProfissionais(a);
@@ -1607,8 +1360,6 @@ public class Manager {
 		}
 	}
 	
-	
-	// Procura e remove uma atividade
 	private static void removerAtividade() {
 		if(atividades.size() == 0) {
 			System.out.println("Não há atividades para remover!\n");
@@ -1618,9 +1369,8 @@ public class Manager {
 		int id;		
 		boolean encontrado;
 		System.out.println("\nRemover Atividade");
-		Atividade ativ = null; // Inicializa ativ
+		Atividade ativ = null;
 		
-		// Imprime atividades cadastradas
 		System.out.println("Atividades cadastradas:");
 		System.out.println("----------------------------------------------");
 		for(Atividade a : atividades) {
@@ -1628,22 +1378,18 @@ public class Manager {
 		}
 		
 		while(true) {
-			id = leID("ID da Atividade");
+			id = readId("ID da Atividade");
 			
-			// Supõe que não encontramos o usuário
 			encontrado = false;
 			
-			// Procura na lista de atividades
 			for(Atividade a : atividades) {
 				if (a.getId() == id) {
-					// Usuario encontrado
 					encontrado = true;
 					ativ = a;
 					break;
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
 				System.out.println("\nDeseja remover a seguinte atividade?");
 
@@ -1670,8 +1416,6 @@ public class Manager {
 		}
 	}
 	
-	
-	// Procura e modifica uma atividade
 	private static void modificarAtividade() {
 		if(atividades.size() == 0) {
 			System.out.println("Não há atividades para modificar!\n");
@@ -1681,9 +1425,8 @@ public class Manager {
 		int id;		
 		boolean encontrado;
 		System.out.println("\n== Modificar Atividade ==");
-		Atividade ativ = null; // Inicializa ativ
-		
-		// Imprime atividades cadastradas
+		Atividade ativ = null; 
+
 		System.out.println("Atividades cadastradas:");
 		System.out.println("----------------------------------------------");
 		for(Atividade a : atividades) {
@@ -1691,22 +1434,18 @@ public class Manager {
 		}
 		
 		while(true) {
-			id = leID("ID da Atividade");
+			id = readId("ID da Atividade");
 			
-			// Supõe que não encontramos o usuário
 			encontrado = false;
 			
-			// Procura na lista de atividades
 			for(Atividade a : atividades) {
 				if (a.getId() == id) {
-					// Usuario encontrado
 					encontrado = true;
 					ativ = a;
 					break;
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
 				System.out.println("\nDeseja modificar a seguinte atividade?");
 
@@ -1719,7 +1458,6 @@ public class Manager {
 				
 				switch(readOption(new int[] {1,2})) {
 				case 1:
-					// Sai do switch para modificar a atividade
 					break;
 				case 2:
 					System.out.println("\nOperação cancelada!");
@@ -1731,7 +1469,6 @@ public class Manager {
 			}
 			
 			while(true) {
-				// Modificamos
 				System.out.println("\nO que você deseja modificar?");
 				System.out.println("(1) Responsável");
 				System.out.println("(2) Descrição");
@@ -1756,40 +1493,32 @@ public class Manager {
 					modificarTerminoAtividade(ativ);
 					continue;
 				case 5:
-					// Inclui usuario
 					adicionarProfissionais(ativ);					
 					continue;
 				case 6:
-					// Exclui usuario
 					removerProfissional(ativ);					
 					continue;
 				case 7:
-					// Altera tarefa de usuario
 					modificarTarefa(ativ);
 					continue;
 				case 8:
-					// Voltar
 					return;
 				}
 			}			
 		}
 	}
 	
-	
-	// Consultar atividades
 	private static void consultarAtividades() {
 		if(atividades.size() == 0) {
 			System.out.println("Não há atividades para consultar!\n");
 			return;
 		}
 				
-		// Imprime mensagens do menu
 		System.out.println("\nConsultar atividades");
 		
 		System.out.println("(1) Lista de Atividades");
 		System.out.println("(2) Buscar por ID");
 		
-		// Le a opção e executa de acordo
 		switch(readOption(new int[] {1,2})) {
 		case 1:
 			System.out.println("\nLista de Atividades");
@@ -1802,63 +1531,41 @@ public class Manager {
 			return;
 		case 2:
 			System.out.println("\nBuscar por ID");
-			// Le RA
-			int id = leID("ID");
+			int id = readId("ID");
 			
-			// Procura usuario com ra lido
 			for(Atividade a : atividades) {
-				
-				// Se o id foi encontrado na lista de atividades
 				if(a.getId() == id) {
-					// Imprime informações da atividade
 					a.print("\n----------------------------------------------\n",
 							"----------------------------------------------\n", false);
 					return;
 				}
-				
-				
 			}
 			
-			// Se não encontramos o id;
 			System.out.println("\nAtividade não encontrada!");
 			
 			return;
 		}
 	}
-	
 
-	///////////////////////////////////////////////////////////////
-	
-	///////////////////////////////////////////////
-	// Métodos auxiliares dos métodos de Atividades
-	///////////////////////////////////////////////////////////////
-	
-	// Modifica o responsável em uma atividade
 	private static void modificarResponsavel(Atividade ativ) {
-		// Altera responsável
-		
 		System.out.println("\nModificar Responsável da Atividade");
 		
 		int idUser;
 		boolean encontrado;
 		
-		// Le o RA
-		idUser = leID("Id do Novo Responsável");
-		
-		// Verifica se o RA lido é igual ao do atual responsável
-		if(ativ.getResponsavel().getId() == idUser) {
+		idUser = readId("Id do Novo Responsável");
+
+		if(ativ.getResponsavel().getIdUser() == idUser) {
 			System.out.println("O id do Novo Responsável é idêntico ao id do Antigo Responsável!");
 			System.out.println("\nOperação cancelada!");
 			return;
 		}
 		
 		encontrado = false;
-		// Verifica se o RA lido está na lista de usuarios cadastrados
 		for(Usuario u : usuarios) {
 			if(u.getIdUser() == idUser) {
 				encontrado = true;
 				
-				// Verifica se quer trocar responsável
 				System.out.print("\nVocê deseja substituir o responsável?");
 				
 				ativ.getResponsavel().print("\n----------------------------------------------\nAntigo Responsável:\n",
@@ -1887,9 +1594,7 @@ public class Manager {
 		}		
 	}
 	
-	// Modifica a descrição da atividade
 	private static void modificarDescricaoAtividade(Atividade ativ) {
-		// Altera descrição
 		
 		System.out.println("\n== Modificar Descrição da Atividade ==");
 		
@@ -1918,15 +1623,13 @@ public class Manager {
 		}
 	}
 	
-	// Modifica a data de incio da atividade
 	private static void modificarInicioAtividade(Atividade ativ) {
-		// Alterar início
 		System.out.println("\nModificar Data de Início da Atividade");
 		
 		LocalDateTime inicio;
 		
 		System.out.println("Nova data de inicio:");
-		inicio = leData();
+		inicio = readDate();
 		
 		System.out.println("\nDeseja substituir a data de início?");
 		
@@ -1948,16 +1651,14 @@ public class Manager {
 		}
 	}
 	
-	// Modifica a data de término da atividade
 	private static void modificarTerminoAtividade(Atividade ativ) {
-		// Alterar término
 		
 		System.out.println("\nModificar Data de Término da Atividade");
 		
 		LocalDateTime termino;
 		
 		System.out.println("Nova data de inicio:");
-		termino = leData();
+		termino = readDate();
 		
 		System.out.println("\nDeseja substituir a data de término?");
 		
@@ -1979,21 +1680,17 @@ public class Manager {
 		}
 	}
 	
-	// Adiciona profissionais a atividade
 	private static void adicionarProfissionais(Atividade a) {
 		System.out.println("\nAdicionar Profissionais à Atividade");
 		int idUser;
 		String tarefa;
 		boolean encontrado;
-		Projeto user = null; // Inicializa objeto
+		Usuario user = null; 
 		
 		while(true) {
-			idUser = leID("Id");
-			
-			// Supõe que não encontramos o usuário
+			idUser = readId("Id");
 			encontrado = false;
-			
-			// Procura na lista de usuários
+
 			for(Usuario u : usuarios) {
 				if (u.getIdUser() == idUser) {
 					// Usuario encontrado
@@ -2003,9 +1700,7 @@ public class Manager {
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
-				// Verifica se o profissional já está na atividade
 				if(a.getProfissionais().contains(user)) {
 					System.out.println("\nUsuário já consta na lista de profissionais associados a esta atividade!");					
 					continue;
@@ -2043,33 +1738,27 @@ public class Manager {
 		}
 	}
 	
-	// Remove profissional da atividade
 	private static void removerProfissional(Atividade ativ) {
 		System.out.println("\nRemover Profissionais da Atividade");
 		int idUser, index = -1;
 		boolean encontrado;
 		
-		// Imprime lista de profissionais envolvidos na tarefa
 		System.out.println("");
 		ativ.printProfissionais();
 		
 		while(true) {
-			idUser = leID("Id");
+			idUser = readId("Id");
 			
-			// Supõe que não encontramos o usuário
 			encontrado = false;
 			
-			// Procura na lista de usuários por indice
 			for(int i = 0; i < ativ.getProfissionais().size(); i++) {
-				if (ativ.getProfissionais().get(i).getId() == idUser) {
-					// Usuario encontrado
+				if (ativ.getProfissionais().get(i).getIdUser() == idUser) {
 					encontrado = true;
 					index = i;
 					break;
 				}
 			}
 			
-			// Se encontrado
 			if(encontrado) {
 				System.out.println("\nDeseja remover o seginte profissional e tarefa?");
 				
@@ -2096,23 +1785,19 @@ public class Manager {
 			}
 		}
 	}
-	
-	// Modifica tarefas de profissioal da atividade
+
 	private static void modificarTarefa(Atividade ativ) {
 		System.out.println("\nModificar Tarefa de Profissional da Atividade");
 		int idUser, index;
 		
-		// Imprime lista de profissionais envolvidos na tarefa
 		System.out.println("");
 		ativ.printProfissionais();
 		
 		while(true) {
-			idUser = leID("Id");
+			idUser = readId("Id");
 			
-			// Verifica se o usuario está na lista
 			index = Usuario.indiceEmLista(ativ.getProfissionais(), idUser);
 			
-			// Se encontrado
 			if(index != -1) {
 
 				System.out.println("\nDeseja modificar a tarefa do seguinte profissional?");
@@ -2140,9 +1825,6 @@ public class Manager {
 		}
 	}
 	
-	
-	
-	// Substitui a tarefa que um profissional já possui em uma atividade
 	private static void substituirTarefa(Atividade ativ, int index) {
 		System.out.println("\nSubstituir Tarefas");
 		
@@ -2172,13 +1854,8 @@ public class Manager {
 	
 	}
 	
-	///////////////////////////////////////////////
-	// Telas de Relatórios e Subtelas
-	///////////////////////////////////////////////
-	
 	private static void telaRelatorios() {
 		while(true) {
-			// Imprime mensagens do menu
 			System.out.println("\nRelatórios");
 			System.out.println("(1) Projetos");
 			System.out.println("(2) Atividades");
@@ -2193,15 +1870,10 @@ public class Manager {
 				break;
 			case 3:
 				System.out.println("");
-				// Encerra o método
 				return;
 			}
 		}
 	}
-	
-
-	
-	// Exibe relatórios de todos os projetos
 	
 	private static void relatorioDeProjetos() {
 		if(projetos.size() == 0) {
@@ -2219,10 +1891,6 @@ public class Manager {
 		return;
 	}
 	
-	
-	
-	// Exibe relatórios de todos as atividades
-	
 	private static void relatorioDeAtividades() {
 		if(atividades.size() == 0) {
 			System.out.println("Não há atividades para exibir relatórios!\n");
@@ -2235,17 +1903,9 @@ public class Manager {
 		for(Atividade a : atividades) {
 			a.print("", "----------------------------------------------", false);
 		}
-		
 		return;
 	}
 	
-	
-	
-	/////////////////////////////////////////////////////////////////
-	
-	/////////////////////////////////////////////////////////////////
-	// Função principal
-	/////////////////////////////////////////////////////////////////
 	public static void main(String [] args) {
 		while(true) {
 			switch(menuPrincipal()) {
@@ -2262,10 +1922,8 @@ public class Manager {
 				telaRelatorios();
 				break;
 			case 5:
-				// Encerra o método
 				return;	
 			}
 		}
 	}
 }
-

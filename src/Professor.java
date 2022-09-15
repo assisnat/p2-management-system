@@ -1,5 +1,3 @@
-
-
 public class Professor extends Usuario{
 
 	public Professor(int idUser, String nome) {

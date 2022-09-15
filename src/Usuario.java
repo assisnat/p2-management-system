@@ -2,31 +2,25 @@ import java.util.LinkedList;
 
 public abstract class Usuario {
 	
-	public static final int CAT_ALUNO_GRADUACAO = 1; 	// Usuário da categoria aluno de graduação 
-	public static final int CAT_ALUNO_MESTRADO = 2; 	// Usuário da categoria aluno de mestrado
-	public static final int CAT_ALUNO_DOUTORADO = 3; 	// Usuário da categoria aluno de doutorado
-	public static final int CAT_PROFESSOR= 4;		// Usuário da categoria professor
-	public static final int CAT_PESQUISADOR = 5;		// Usuário da categoria pesquisador
-	public static final int CAT_PROFISSIONAL = 6; 	// Usuário da categoria profissional (desenvolvedor, testador e analista)
-	public static final int CAT_TECNICO = 7;		// Usuário da categoria técnico
+	public static final int CAT_ALUNO_GRADUACAO = 1;
+	public static final int CAT_ALUNO_MESTRADO = 2; 
+	public static final int CAT_ALUNO_DOUTORADO = 3; 
+	public static final int CAT_PROFESSOR= 4;	
+	public static final int CAT_PESQUISADOR = 5;		
+	public static final int CAT_PROFISSIONAL = 6; 
+	public static final int CAT_TECNICO = 7;		
 
 	protected int idUser;
 	protected String nome;
-	
-	// Construtor
 	
 	public Usuario(int idUser, String nome) {
 		this.idUser = idUser;
 		this.nome = nome;
 	}
-
-	// Métodos abstratos
 	
 	public abstract void print(String antes, String depois);
 	
 	public abstract String getCategoria();
-	
-	// Getters e Setters
 	
 	public int getIdUser() {
 		return idUser;

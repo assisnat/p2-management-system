@@ -1,5 +1,3 @@
-// import users.*;
-
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
@@ -18,7 +16,6 @@ public class Projeto{
 	private LinkedList<Atividade> atividades;
 	private int status;
 	
-	// Construtor
 	public Projeto(int id) {
 		this.id = id;
 		status = Projeto.STATUS_CRIACAO;
@@ -30,9 +27,6 @@ public class Projeto{
 		atividades = new LinkedList<>();
 	}
 	
-	// Métodos da Classe
-	
-	// Valida se um usuário pode ser coordenador
 	public static boolean validaCoordenador(Usuario u) {
 		if (u.getClass() == Pesquisador.class || u.getClass() == Professor.class) {
 			return true;
@@ -41,31 +35,26 @@ public class Projeto{
 		}
 	}
 	
-	// Insere profissional
 	public void inserirProfissional(Usuario u) {
 		if(!profissionais.contains(u)) {
 			profissionais.add(u);
 		}
 	}
 	
-	// Insere atividade
 	public void inserirAtividade(Atividade a) {
 		if(!atividades.contains(a)) {
 			atividades.add(a);
 		}
 	}
 	
-	// Remove profissional
 	public boolean removerProfissional(Usuario u) {
 		return profissionais.remove(u);
 	}
 	
-	// Remove atividade
 	public boolean removerAtividade(Atividade a) {
 		return atividades.remove(a);
 	}
 	
-	// Imprime atividade
 	public void print(String antes, String depois, boolean imprimeId) {
 		System.out.print(antes);
 		if(imprimeId) {
@@ -110,8 +99,6 @@ public class Projeto{
 		
 		System.out.print(depois);
 	}
-	
-	// Getters e Setters	
 	
 	public String getDescricao() {
 		return descricao;

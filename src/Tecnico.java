@@ -1,5 +1,3 @@
-
-
 public class Tecnico extends Usuario{
 
 	public Tecnico(int idUser, String nome) {
@@ -18,6 +16,5 @@ public class Tecnico extends Usuario{
 	public String getCategoria() {
 		return "Técnico";
 	}
-	
 	
 }

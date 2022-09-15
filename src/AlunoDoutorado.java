@@ -1,5 +1,3 @@
-
-
 public class AlunoDoutorado extends Usuario{
 
 	public AlunoDoutorado(int idUser, String nome) {
